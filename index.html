@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web通信・セキュリティ基礎演習 | オンライン学習ポータル</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@800;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap');
+
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+        }
+
+        /* 画面全体のシェイク（ドッキリ用） */
+        @keyframes shake {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            10% { transform: translate(-8px, -8px) rotate(-1deg); }
+            20% { transform: translate(8px, 5px) rotate(1deg); }
+            30% { transform: translate(-6px, 6px) rotate(0deg); }
+            40% { transform: translate(6px, -4px) rotate(1deg); }
+            50% { transform: translate(-5px, 5px) rotate(-1deg); }
+            60% { transform: translate(7px, -7px) rotate(0deg); }
+            70% { transform: translate(-8px, 6px) rotate(1deg); }
+            80% { transform: translate(6px, -6px) rotate(-1deg); }
+            90% { transform: translate(-4px, 4px) rotate(0deg); }
+            100% { transform: translate(0, 0) rotate(0deg); }
+        }
+        .animate-shake {
+            animation: shake 0.3s infinite ease-in-out;
+        }
+
+        /* 文字の激しい揺れ（ドッキリ用） */
+        @keyframes textShake {
+            0% { transform: scale(1) rotate(0deg); }
+            25% { transform: scale(1.08) rotate(-3deg); }
+            50% { transform: scale(0.95) rotate(3deg); }
+            75% { transform: scale(1.05) rotate(-2deg); }
+            100% { transform: scale(1) rotate(0deg); }
+        }
+        .animate-text-shake {
+            animation: textShake 0.25s infinite ease-in-out;
+        }
+
+        /* テキスト袋文字（黒縁取り） */
+        .text-stroke-black {
+            -webkit-text-stroke: 4px #000;
+            paint-order: stroke fill;
+            font-family: 'M PLUS Rounded 1c', 'Noto Sans JP', sans-serif;
+        }
+
+        /* カードの青パルス発光エフェクト */
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); border-color: rgba(75, 85, 99, 1); }
+            30% { box-shadow: 0 0 25px 8px rgba(59, 130, 246, 0.8); border-color: rgba(96, 165, 250, 1); }
+            100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); border-color: rgba(75, 85, 99, 1); }
+        }
+        .card-pulse {
+            animation: pulseGlow 0.4s ease-out;
+        }
+
+        /* ドッキリ画面の波紋アニメーション */
+        @keyframes ripple {
+            0% { width: 0px; height: 0px; opacity: 0.8; }
+            100% { width: 1000px; height: 1000px; opacity: 0; }
+        }
+        .ripple-circle {
+            position: absolute;
+            border-radius: 50%;
+            border: 4px solid rgba(255, 255, 255, 0.9);
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+        .ripple-1 { animation: ripple 2s infinite cubic-bezier(0.215, 0.61, 0.355, 1); animation-delay: 0s; }
+        .ripple-2 { animation: ripple 2s infinite cubic-bezier(0.215, 0.61, 0.355, 1); animation-delay: 0.6s; }
+        .ripple-3 { animation: ripple 2s infinite cubic-bezier(0.215, 0.61, 0.355, 1); animation-delay: 1.2s; }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800 min-h-screen flex flex-col justify-between m-0 p-0">
+
+    <!-- 音源 (同階層の sound.mp3) -->
+    <audio id="sound" src="sound.mp3" preload="auto"></audio>
+
+    <!-- ==========================================
+         0. 偽装勉強サイト画面（初期表示）
+         ========================================== -->
+    <div id="study-screen" class="min-h-screen flex flex-col bg-slate-900 text-gray-100">
+        <!-- ナビゲーションバー -->
+        <header class="bg-slate-800 border-b border-slate-700 px-6 py-4 flex items-center justify-between shadow-md">
+            <div class="flex items-center gap-3">
+                <div class="bg-blue-600 p-2 rounded-lg text-white font-bold text-xs tracking-wider">
+                    e-Learning
+                </div>
+                <h1 class="text-base sm:text-lg font-bold text-slate-100">Web通信・ネットワークセキュリティ演習</h1>
+            </div>
+            <span class="text-xs text-slate-400 hidden sm:inline-block">受講ID: 2026-NET-8841</span>
+        </header>
+
+        <!-- メインコンテンツ -->
+        <main class="flex-1 max-w-4xl w-full mx-auto p-4 sm:p-6 flex flex-col gap-6">
+            
+            <!-- 講義タイトルカード -->
+            <div class="bg-slate-800 rounded-xl border border-slate-700 p-5 shadow-lg">
+                <div class="flex items-center gap-2 text-xs font-semibold text-blue-400 mb-2">
+                    <span>第4章：暗号化プロトコルとパケット構造の解析</span>
+                    <span class="text-slate-600">•</span>
+                    <span>標準学習時間 45分</span>
+                </div>
+                <h2 class="text-xl sm:text-2xl font-bold tex
